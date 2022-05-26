@@ -1,4 +1,5 @@
 import Player from '@vimeo/player';
+import throttle from 'lodash.throttle';
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
 
@@ -10,12 +11,9 @@ player.getVideoTitle().then(function (title) {
   console.log('title:', title);
 });
 
-const onTimeUpdate = function (data) {
-  // _.throttle(() => {
-  //     console.log("Scroll handler call every 300ms");
-  //   }, 300)
+const onTimeUpdate = throttle(data => {
   localStorage.setItem('videoplayer-current-time', data['seconds']);
-};
+}, 1000);
 
 player.on('timeupdate', onTimeUpdate);
 
